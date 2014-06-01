@@ -21,8 +21,19 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
+      
+
+
       var socket = io();
+
+      socket.on('connect', function(data) {
+          nickname = prompt("Name:");
+          socket.emit('join', nickname);
+      });
+
+
       $('form').submit(function(){
+        $('#messages').append($('<li>').text($('#m').val()));
         socket.emit('chat message', $('#m').val());
         $('#m').val('');
         return false;
@@ -30,6 +41,10 @@
       socket.on('chat message', function(msg){
         $('#messages').append($('<li>').text(msg));
       });
+
+        
+
+
     </script>
   </body>
 </html>
