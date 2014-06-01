@@ -7,7 +7,11 @@ app.get('/', function(req, res){ // get request at the root the call back's
   res.sendfile('index.html');    // response object (res) servers the index.html file
 });
 
-sockets = {};
+app.get('/chat.html', function(req, res){ // get request at the root the call back's
+  res.sendfile('chat.html');    // response object (res) servers the index.html file
+});
+
+sockets_and_server = {}{};
 
 io.on('connection', function(socket){
 
@@ -17,7 +21,6 @@ io.on('connection', function(socket){
 	});
 
   	socket.on('chat message', function(msg){
-
   		socket.broadcast.emit('chat message', socket.nickname + ": " + msg);
   });
 
@@ -27,8 +30,8 @@ io.on('connection', function(socket){
 
 
 });
-
-http.listen(3000, function(){
-  console.log('listening on *:3000');
+var port = 3000;
+http.listen(port, function(){
+  console.log('listening on *:' + port);
 });
 
