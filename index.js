@@ -3,15 +3,22 @@ var app = require('express')(); //getting the express object.
 var http = require('http').Server(app);  //getting an https erver onject that with express
 var io = require('socket.io')(http); // creating a io object. I asked about the http server part. 
 
+var rooms = [];
+function Room(){
+  this.clients = [];
+  this.password;
+}
+//seeing if this works
+rooms[0] = new Room();
+
 app.get('/', function(req, res){ // get request at the root the call back's
   res.sendfile('index.html');    // response object (res) servers the index.html file
 });
 
-app.get('/chat.html', function(req, res){ // get request at the root the call back's
+app.get('/chat', function(req, res){ // get request at the root the call back's
   res.sendfile('chat.html');    // response object (res) servers the index.html file
 });
 
-sockets_and_server = {}{};
 
 io.on('connection', function(socket){
 

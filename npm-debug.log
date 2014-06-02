@@ -1,0 +1,133 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', 'hotnode', '-g' ]
+2 info using npm@1.4.7
+3 info using node@v0.10.26
+4 verbose cache add [ 'hotnode', null ]
+5 verbose cache add name=undefined spec="hotnode" args=["hotnode",null]
+6 verbose parsed url { protocol: null,
+6 verbose parsed url   slashes: null,
+6 verbose parsed url   auth: null,
+6 verbose parsed url   host: null,
+6 verbose parsed url   port: null,
+6 verbose parsed url   hostname: null,
+6 verbose parsed url   hash: null,
+6 verbose parsed url   search: null,
+6 verbose parsed url   query: null,
+6 verbose parsed url   pathname: 'hotnode',
+6 verbose parsed url   path: 'hotnode',
+6 verbose parsed url   href: 'hotnode' }
+7 silly lockFile 15ffed55-hotnode hotnode
+8 verbose lock hotnode /Users/Brennan/.npm/15ffed55-hotnode.lock
+9 silly lockFile 15ffed55-hotnode hotnode
+10 silly lockFile 15ffed55-hotnode hotnode
+11 verbose addNamed [ 'hotnode', '' ]
+12 verbose addNamed [ null, '*' ]
+13 silly lockFile a54aeaa5-hotnode hotnode@
+14 verbose lock hotnode@ /Users/Brennan/.npm/a54aeaa5-hotnode.lock
+15 silly addNameRange { name: 'hotnode', range: '*', hasData: false }
+16 verbose url raw hotnode
+17 verbose url resolving [ 'https://registry.npmjs.org/', './hotnode' ]
+18 verbose url resolved https://registry.npmjs.org/hotnode
+19 info trying registry request attempt 1 at 10:02:02
+20 verbose etag "6YY7OLQ8V2DZHSZLZG8EP9E4A"
+21 http GET https://registry.npmjs.org/hotnode
+22 http 304 https://registry.npmjs.org/hotnode
+23 silly registry.get cb [ 304,
+23 silly registry.get   { date: 'Mon, 02 Jun 2014 15:02:04 GMT',
+23 silly registry.get     server: 'Apache',
+23 silly registry.get     via: '1.1 varnish',
+23 silly registry.get     'last-modified': 'Mon, 02 Jun 2014 15:02:04 GMT',
+23 silly registry.get     'cache-control': 'max-age=1',
+23 silly registry.get     etag: '"6YY7OLQ8V2DZHSZLZG8EP9E4A"',
+23 silly registry.get     'x-served-by': 'cache-d98-DAL',
+23 silly registry.get     'x-cache': 'MISS',
+23 silly registry.get     'x-cache-hits': '0',
+23 silly registry.get     'x-timer': 'S1401721324.447404,VS0,VE129',
+23 silly registry.get     vary: 'Accept',
+23 silly registry.get     'content-length': '0',
+23 silly registry.get     'keep-alive': 'timeout=10, max=50',
+23 silly registry.get     connection: 'Keep-Alive' } ]
+24 verbose etag hotnode from cache
+25 silly addNameRange number 2 { name: 'hotnode', range: '*', hasData: true }
+26 silly addNameRange versions [ 'hotnode',
+26 silly addNameRange   [ '0.0.1',
+26 silly addNameRange     '0.0.2',
+26 silly addNameRange     '0.0.3',
+26 silly addNameRange     '0.0.4',
+26 silly addNameRange     '0.0.5',
+26 silly addNameRange     '0.0.6',
+26 silly addNameRange     '0.0.7',
+26 silly addNameRange     '0.0.8' ] ]
+27 verbose addNamed [ 'hotnode', '0.0.8' ]
+28 verbose addNamed [ '0.0.8', '0.0.8' ]
+29 silly lockFile 4b385a17-hotnode-0-0-8 hotnode@0.0.8
+30 verbose lock hotnode@0.0.8 /Users/Brennan/.npm/4b385a17-hotnode-0-0-8.lock
+31 silly lockFile 4b385a17-hotnode-0-0-8 hotnode@0.0.8
+32 silly lockFile 4b385a17-hotnode-0-0-8 hotnode@0.0.8
+33 silly lockFile a54aeaa5-hotnode hotnode@
+34 silly lockFile a54aeaa5-hotnode hotnode@
+35 silly resolved [ { name: 'hotnode',
+35 silly resolved     description: 'Hot code loading for node.js',
+35 silly resolved     version: '0.0.8',
+35 silly resolved     homepage: 'http://www.filshmedia.net',
+35 silly resolved     author:
+35 silly resolved      { name: 'Sascha Gehlich',
+35 silly resolved        email: 'contact@filshmedia.net',
+35 silly resolved        url: 'http://www.filshmedia.net' },
+35 silly resolved     contributors: [ [Object], [Object] ],
+35 silly resolved     repository: { type: 'git', url: 'http://github.com/saschagehlich/hotnode' },
+35 silly resolved     bugs: { url: 'http://github.com/saschagehlich/hotnode/issues' },
+35 silly resolved     dependencies: { watch: '0.5.0' },
+35 silly resolved     directories: { javascript: './javascript' },
+35 silly resolved     bin:
+35 silly resolved      { hotnode: './javascript/hotnode.js',
+35 silly resolved        hotcoffee: './javascript/hotcoffee.js' },
+35 silly resolved     main: 'hotnode',
+35 silly resolved     engines: { node: '>=0.2.2' },
+35 silly resolved     scripts: null,
+35 silly resolved     licenses: [ [Object] ],
+35 silly resolved     preferGlobal: true,
+35 silly resolved     readme: 'Hotnode\n=======\n\nHotnode is a package that allows you to automatically reload your code by just saving the source in your editor.\n\nFeature Overview\n-----------------\n\n* Automatically reloads your node.js code on file change\n* Watches .js files in the current directory and its subdirectories\n\nInstallation\n============\n\nThe following versions are required for Hotnode:\n\n* Node.js >= 0.2.2\n* npm >= 0.1.25\n\nTo see growl messages as soon as your node.js process has been restarted, you will need [http://growl.info/extras.php#growlnotify](growlnotify), a command-line based tool for growl.\n\nFor notifications on Ubuntu / Gnome, you need libnotify:\n\n    sudo apt-get install libnotify-bin\n\nInstall it simply via npm:\n\n    npm install hotnode\n\nInstructions\n============\n\nInstead of starting your app directly with\n    node app.js\nLaunch it with\n    hotnode app.js\n\n\nHotcoffee\n=========\n\nHotnode also includes an executable called `hotcoffee` which automatically runs the given file with the `coffee` command and watches all CoffeeScript files in the directory.\n\nLicense\n=======\n\nCopyright (c) 2010 [http://www.filshmedia.net](FILSH Media GmbH), released under the MIT license\n\n',
+35 silly resolved     readmeFilename: 'README.md',
+35 silly resolved     _id: 'hotnode@0.0.8',
+35 silly resolved     _shasum: '3adaa63d5b252c26f12945c827d6125c60c80733',
+35 silly resolved     _from: 'hotnode@',
+35 silly resolved     _resolved: 'https://registry.npmjs.org/hotnode/-/hotnode-0.0.8.tgz' } ]
+36 info install hotnode@0.0.8 into /usr/local/lib
+37 info installOne hotnode@0.0.8
+38 info /usr/local/lib/node_modules/hotnode unbuild
+39 verbose tar unpack /Users/Brennan/.npm/hotnode/0.0.8/package.tgz
+40 silly lockFile 31eddea8-r-local-lib-node-modules-hotnode tar:///usr/local/lib/node_modules/hotnode
+41 verbose lock tar:///usr/local/lib/node_modules/hotnode /Users/Brennan/.npm/31eddea8-r-local-lib-node-modules-hotnode.lock
+42 silly lockFile 158de277-an-npm-hotnode-0-0-8-package-tgz tar:///Users/Brennan/.npm/hotnode/0.0.8/package.tgz
+43 verbose lock tar:///Users/Brennan/.npm/hotnode/0.0.8/package.tgz /Users/Brennan/.npm/158de277-an-npm-hotnode-0-0-8-package-tgz.lock
+44 silly gunzTarPerm modes [ '755', '644' ]
+45 error Error: EACCES, mkdir '/usr/local/lib/node_modules/hotnode'
+45 error  { [Error: EACCES, mkdir '/usr/local/lib/node_modules/hotnode']
+45 error   errno: 3,
+45 error   code: 'EACCES',
+45 error   path: '/usr/local/lib/node_modules/hotnode',
+45 error   fstream_type: 'Directory',
+45 error   fstream_path: '/usr/local/lib/node_modules/hotnode',
+45 error   fstream_class: 'DirWriter',
+45 error   fstream_stack:
+45 error    [ '/usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23',
+45 error      '/usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:37:53',
+45 error      'Object.oncomplete (fs.js:107:15)' ] }
+46 error Please try running this command again as root/Administrator.
+47 error System Darwin 12.4.0
+48 error command "node" "/usr/local/bin/npm" "install" "hotnode" "-g"
+49 error cwd /Users/Brennan/Desktop/chat-example
+50 error node -v v0.10.26
+51 error npm -v 1.4.7
+52 error path /usr/local/lib/node_modules/hotnode
+53 error fstream_path /usr/local/lib/node_modules/hotnode
+54 error fstream_type Directory
+55 error fstream_class DirWriter
+56 error code EACCES
+57 error errno 3
+58 error stack Error: EACCES, mkdir '/usr/local/lib/node_modules/hotnode'
+59 error fstream_stack /usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23
+59 error fstream_stack /usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:37:53
+59 error fstream_stack Object.oncomplete (fs.js:107:15)
+60 verbose exit [ 3, true ]
