@@ -2,15 +2,36 @@
 <html>
   <head>
     <title>Start A Chat</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+    var socket = io();
+    $(document).ready(function(){
+
+      $("#buttonj").click(function(){
+        //var infoj = [('#yournamej').val(), ('#roomnumberj').val(), ('#roompasswordj').val()];
+        alert('Form is submitting1');
+        var infoj = "";
+
+        socket.emit('requestEntry', infoj);
+        alert('Form is submitting');
+        });
+      });
+    </script>
   </head>
   <body>
-    <p>Join a room</p>
-    <form>
-      Your name: <input type="text" name="yourname"><br>
-      Room number: <input type="text" name="roomnumber"><br>
-      Room password: <input type="text" name="roompassword"><br>
-</form>
-    <button type="button">Join!</button>
-    <p>Start a room</p>
+</div>
+  <div>
+      <h3>Join a room</h3>
+        Your name: <input type="text" id="yournamej"><br>
+        Room name: <input type="text" id="roomnumberj"><br>
+        Room password: <input type="text" id="roompasswordj"><br>
+      <button id="buttonj" type="button">Join!</button>
+      <h3>Start a room</h3>
+        Your name: <input type="text" id="yourname"><br>
+        Room name: <input type="text" id="roomnumber"><br>
+        Room password: <input type="text" id="roompassword"><br>
+      <button type="button" onclick="createRoomButton()">Start!</button>
+    </div>
   </body>
 </html>
