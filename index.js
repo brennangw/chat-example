@@ -22,20 +22,34 @@ app.get('/chat', function(req, res){ // get request at the root the call back's
 io.on('connection', function(socket){
 
   socket.on('requestEntry', function(strInfo){
+    console.log("passed string: " + strInfo);
     var info = strInfo.split(",");
     socket.nickname = String(info[0]);
+    console.log("trying to find room: " + info[1]);
+
+    var index;
     for (count = 0; count < rooms.length; ++count){
-        if (rooms[count].name === info[1]){
+
+      console.log("name: " + rooms[count].name);
+
+        if (String(rooms[count].name) === String(info[1])) {
           rooms[count].clients.push(socket);
+          console.log("found the room");
+          index = count;
         }
     }
-    var roomNum = rooms.indexOf();
+    //var roomNum = rooms.indexOf(room.name);
+    console.log("emiting giveRoomIndex next.");
+    socket.emit('giveRoomIndex', index);
+    //need to pass this back.
   });
 
   socket.on('startRoom', function(strInfo){
+    console.log("passed string: " + strInfo);
     var info = strInfo.split(",");
     var newRoom = new Room(info[1]);
     socket.nickname = String(info[0]);
+    console.log("started room: " + newRoom.name)
     newRoom.clients.push(socket);
     rooms.push(newRoom);
     var index = rooms.indexOf(newRoom);
@@ -50,23 +64,34 @@ io.on('connection', function(socket){
   	socket.on('chat message', function(msg){
       var info = msg.split(",");
       var message = info[0];
-
-      //issue need to use the name to find the roomNum
       var roomNum = info[1];
-      console.log("RN: " + roomNum);
-      var activeRoom = rooms[roomNum];
-      var count;
-      for (count = 0; count < activeRoom.clients.length; ++count){
-        console.log(message);
+      if (roomNum > -1){
+
+        console.log("message: " + message + ",roomNum: " + roomNum);
+
+        var namedRoomIndex;
+
+        // for (var i = 0; i < rooms.length; i++) {
+        //   if (rooms[i].name ===  
+        // };
+
+        //issue need to use the name to find the roomNum
+        var activeRoom = rooms[roomNum];
+        var count;
+        for (count = 0; count < activeRoom.clients.length; ++count){
+          console.log(activeRoom.clients[count].nickname);
+          if (socket != activeRoom.clients[count]){
+            activeRoom.clients[count].emit('chat message', message);
+          }
+
+        }
       }
       
-
-
   		//socket.broadcast.emit('chat message', socket.nickname + ": " + msg);
   });
 
   	socket.on('disconnect', function () {
-  		socket.broadcast.emit('chat message', socket.nickname + " has disconnected");
+  		//socket.broadcast.emit('chat message', socket.nickname + " has disconnected");
   	});
 
 
