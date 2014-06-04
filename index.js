@@ -24,6 +24,12 @@ io.on('connection', function(socket){
   socket.on('requestEntry', function(strInfo){
     var info = strInfo.split(",");
     socket.nickname = String(info[0]);
+    for (count = 0; count < rooms.length; ++count){
+        if (rooms[count].name === info[1]){
+          rooms[count].clients.push(socket);
+        }
+    }
+    var roomNum = rooms.indexOf();
   });
 
   socket.on('startRoom', function(strInfo){
@@ -42,7 +48,21 @@ io.on('connection', function(socket){
 	//});
 
   	socket.on('chat message', function(msg){
-  		socket.broadcast.emit('chat message', socket.nickname + ": " + msg);
+      var info = msg.split(",");
+      var message = info[0];
+
+      //issue need to use the name to find the roomNum
+      var roomNum = info[1];
+      console.log("RN: " + roomNum);
+      var activeRoom = rooms[roomNum];
+      var count;
+      for (count = 0; count < activeRoom.clients.length; ++count){
+        console.log(message);
+      }
+      
+
+
+  		//socket.broadcast.emit('chat message', socket.nickname + ": " + msg);
   });
 
   	socket.on('disconnect', function () {

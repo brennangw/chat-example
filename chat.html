@@ -88,16 +88,19 @@
 
       $('form').submit(function(){
         $('#messages').append($('<li>').text($('#m').val()));
-        socket.emit('chat message', $('#m').val());
+        var toSend = String($('#m').val()) + ',' + String(roomIndex)
+        socket.emit('chat message', toSend);
         $('#m').val('');
         return false;
       });
       socket.on('chat message', function(msg){
-        $('#messages').append($('<li>').text(msg));
+        $('#messages').append($('<li>').text(index));
       });
 
       socket.on('giveRoomIndex', function(index){
         roomIndex = index;
+        $('#messages').append($('<li>').text(String(roomIndex)));
+
       });
         
 
