@@ -38,12 +38,10 @@ io.on('connection', function(socket){
           index = count;
         }
     }
-    //var roomNum = rooms.indexOf(room.name);
     console.log("emiting giveRoomIndex next.");
     socket.emit('giveRoomIndex', index);
-    //need to pass this back.
   });
-
+  
   socket.on('startRoom', function(strInfo){
     console.log("passed string: " + strInfo);
     var info = strInfo.split(",");
@@ -56,48 +54,36 @@ io.on('connection', function(socket){
     io.emit('giveRoomIndex', index);
   });
 
-	//socket.on('join', function(name){
-	//	socket.nickname = name;
-	//	io.emit('chat message', 'WELCOME: ' + name);
-	//});
-
-  	socket.on('chat message', function(msg){
-      var info = msg.split(",");
-      var message = info[0];
-      var roomNum = info[1];
-      if (roomNum > -1){
-
-        console.log("message: " + message + ",roomNum: " + roomNum);
-
-        var namedRoomIndex;
-
-        // for (var i = 0; i < rooms.length; i++) {
-        //   if (rooms[i].name ===  
-        // };
-
-        //issue need to use the name to find the roomNum
-        var activeRoom = rooms[roomNum];
-        var count;
-        for (count = 0; count < activeRoom.clients.length; ++count){
-          console.log(activeRoom.clients[count].nickname);
-          if (socket != activeRoom.clients[count]){
-            activeRoom.clients[count].emit('chat message', message);
-          }
-
+  socket.on('chat message', function(msg){
+    var info = msg.split(",");
+    var message = info[0];
+    var roomNum = info[1];
+    if (roomNum > -1){
+     console.log("message: " + message + ",roomNum: " + roomNum)
+      var namedRoomIndex;
+      var activeRoom = rooms[roomNum];
+      var count;
+      for (count = 0; count < activeRoom.clients.length; ++count){
+        console.log(activeRoom.clients[count].nickname);
+        if (socket != activeRoom.clients[count]){
+          activeRoom.clients[count].emit('chat message', message);
         }
       }
-      
-  		//socket.broadcast.emit('chat message', socket.nickname + ": " + msg);
+    }
   });
 
-  	socket.on('disconnect', function () {
-  		//socket.broadcast.emit('chat message', socket.nickname + " has disconnected");
-  	});
-
-
+  socket.on('disconnect', function () {
+    console.log(socket.nickname + " has disconnected");
+	});
 });
+
+//server info
 var port = 3000;
 http.listen(port, function(){
   console.log('listening on *:' + port);
 });
+
+
+
+
 
