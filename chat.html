@@ -8,52 +8,69 @@
       $(document).ready(function(){
         $("#buttonj").click(function(){
           //var infoj = [('#yournamej').val(), ('#roomnumberj').val(), ('#roompasswordj').val()
-          var infoj = 
-          var infoj = $('yournamej').val();
-          $('#joinStartInfo').html('');
-          socket.emit('requestEntry', infoj);
-          });
-        $("#buttons").click(function(){
-          //var infos = [('#yournamej').val(), ('#roomnumberj').val(), ('#roompasswordj').val()
-          var infos = "";
-          $('#joinStartInfo').html('');
-          socket.emit('requestEntry', infos);
+          var ynj = new String($("#yournamej").val());
+          var rnj = new String($("#roomnamej").val());
+          var rpj = new String($("#roompasswordj").val());
+          var infoArrJ = [ynj, rnj, rpj];
+          var strInfoArrJ = infoArrJ.toString();
+          socket.emit('requestEntry', strInfoArrJ);
+          $("#joinStartInfo").html('');
+
         });
+        $("#buttons").click(function(){
+          //var infoj = [('#yournamej').val(), ('#roomnumberj').val(), ('#roompasswordj').val()
+          var yns = new String($("#yournames").val());
+          var rns = new String($("#roomnames").val());
+          var rps = new String($("#roompasswords").val());
+          var infoArrS = [yns, rns, rps];
+          var strInfoArrS = infoArrS.toString();
+          socket.emit('startRoom', strInfoArrS);
+          $("#joinStartInfo").html('');
+        });
+
       });
 
     </script>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
-      #formM { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      #formM input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      #formM button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #f { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      input.t { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      #fb { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0;  }
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
+      #mdiv {padding-bottom:40px;}
     </style>
   </head>
   <body>
-    http://api.jquery.com/serializearray/
 
   <div id="joinStartInfo">
-    <form>
+    
       <h3>Join a room</h3>
+      <form>
         Your name: <input type="text" id="yournamej"><br>
-        Room name: <input type="text" id="roomnumberj"><br>
+        Room name: <input type="text" id="roomnamej"><br>
         Room password: <input type="text" id="roompasswordj"><br>
       <button id="buttonj" type="button">Join!</button>
+      </form>
+      <form>
       <h3>Start a room</h3>
         Your name: <input type="text" id="yournames"><br>
-        Room name: <input type="text" id="roomnumbers"><br>
+        Room name: <input type="text" id="roomname"><br>
         Room password: <input type="text" id="roompasswords"><br>
-      <button id="buttons">Start!</button>
+      <button id="buttons" type="button">Start!</button>
+      </form>
     </div>
 
-    <div>
-      <ul id="messages"></ul>
-      <form id="formM" action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
+      <div>
+      <div id="mdiv">
+      <ul id="messages" ></ul>
+      </div>
+      <p></p>
+      <form action="" id="f">
+      <input id="m" class="t" autocomplete="off" />
+      <button id="fb">Send</button>
       </form>
     </div>
 
@@ -62,11 +79,11 @@
 
 
       var socket = io();
-
-      socket.on('connect', function(data) {
-          nickname = prompt("Name:");
-          socket.emit('join', nickname);
-      });
+      var roomIndex;
+      //socket.on('connect', function(data) {
+      //    nickname = prompt("Name:");
+      //    socket.emit('join', nickname);
+      //});
 
 
       $('form').submit(function(){
@@ -79,6 +96,9 @@
         $('#messages').append($('<li>').text(msg));
       });
 
+      socket.on('giveRoomIndex', function(index){
+        roomIndex = index;
+      });
         
 
 
