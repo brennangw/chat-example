@@ -77,7 +77,7 @@ io.on('connection', function(socket){
     newRoom.clients.push(socket);
     rooms.push(newRoom);
     var index = rooms.indexOf(newRoom);
-    io.emit('giveRoomIndex', index);
+    socket.emit('giveRoomIndex', index);
   });
 
   socket.on('chat message', function(msg){
