@@ -78,11 +78,6 @@
 
       var socket = io();
       var roomIndex;
-      //socket.on('connect', function(data) {
-      //    nickname = prompt("Name:");
-      //    socket.emit('join', nickname);
-      //});
-
 
       $('form').submit(function(){
         $('#messages').append($('<li>').text($('#m').val()));
@@ -95,9 +90,9 @@
         $('#messages').append($('<li>').text(String(msg)));
       });
 
-      socket.on('giveRoomIndex', function(index){
-        roomIndex = index;
-        $('#messages').append($('<li>').text(String(roomIndex)));
+      socket.on('requestEntryResponse', function(response){
+        alert(response);
+        roomIndex = response;
       });
         
 

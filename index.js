@@ -18,7 +18,6 @@ app.get('/chat', function(req, res){ // get request at the root the call back's
   res.sendfile('chat.html');    // response object (res) servers the index.html file
 });
 
-
 io.on('connection', function(socket){
 
   socket.on('requestEntry', function(strInfo){
@@ -52,20 +51,19 @@ io.on('connection', function(socket){
                 rooms[count].clients.push(socket);
                 console.log("found the room and socket added to it");
                 index = count;
-                socket.emit('giveRoomIndex', index);
+                socket.emit('requestEntryResponse', index);
               } else { //FAILING UNIQUE NAME TEST
-                socket.emit('giveRoomIndex', "non-unique name");
+                socket.emit('requestEntryResponse', "non-unique name");
               }
 
             } else { //FAILNG PASSWORD TEST
               console.log("failed password");
-              socket.emit('giveRoomIndex', "failed password");
+              socket.emit('requestEntryResponse', "failed password");
             }
       }
       console.log("emiting giveRoomIndex next.");
     }
   });
-
   
   socket.on('startRoom', function(strInfo){
     console.log("passed string: " + strInfo);
@@ -77,15 +75,17 @@ io.on('connection', function(socket){
     newRoom.clients.push(socket);
     rooms.push(newRoom);
     var index = rooms.indexOf(newRoom);
-    socket.emit('giveRoomIndex', index);
+    socket.emit('requestEntryResponse', index);
   });
 
   socket.on('chat message', function(msg){
+    console.log("messaged recived");
     var info = msg.split(",");
     var message = info[0];
     var roomNum = info[1];
-    if (roomNum > -1){
-     console.log("message: " + message + ",roomNum: " + roomNum)
+    console.log("messaged recived (before if)"); 
+    if (roomNum){
+     console.log("message: " + message + ",roomNum: " + roomNum);
       var namedRoomIndex;
       var activeRoom = rooms[roomNum];
       var count;
