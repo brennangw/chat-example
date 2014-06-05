@@ -84,17 +84,18 @@ io.on('connection', function(socket){
     var message = info[0];
     var roomNum = info[1];
     console.log("messaged recived (before if)"); 
-    if (roomNum){
+    if (roomNum != null){ // why is this not enough
      console.log("message: " + message + ",roomNum: " + roomNum);
       var namedRoomIndex;
       var activeRoom = rooms[roomNum];
       var count;
+      if (activeRoom != null){
       for (count = 0; count < activeRoom.clients.length; ++count){
         console.log(activeRoom.clients[count].nickname);
         if (socket != activeRoom.clients[count]){
           activeRoom.clients[count].emit('chat message', message);
         }
-      }
+      }}
     }
   });
 
