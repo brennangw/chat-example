@@ -5,8 +5,8 @@ var io = require('socket.io')(http); // creating a io object. I asked about the 
 
 var rooms = [];
 function Room(name){
-  this.name = name;
-  this.clients = [];
+  				this.name = name;
+  			this.clients = [];
   this.password;
 }
 
