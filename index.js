@@ -99,9 +99,25 @@ io.on('connection', function(socket){
     }
   });
 
-  socket.on('disconnect', function () {
-    console.log(socket.nickname + " has disconnected");
+	  socket.on('disconnect', function () { //this seems slow.
+		var k;
+	    	for(k = 0; k < rooms.length; ++k){
+			var l;
+			for (l = 0; l < rooms[k].clients.length; ++l){
+				if(rooms[k].clients[l] === socket){
+					if(rooms[k].length === 1){
+						console.log(Room.name + "has been removed, a room");
+						rooms.splice(k);
+					} else {
+						console.log(socket.nickname + "has been removed, a client");
+						rooms[k].clients.splice(l);
+					}
+				}				
+			}
+		}
+		console.log(socket.nickname + " has disconnected");
 	});
+
 });
 
 //server info
