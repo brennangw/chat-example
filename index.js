@@ -5,17 +5,35 @@ var io = require('socket.io')(http); // creating a io object. I asked about the 
 
 var rooms = [];
 function Room(name){
-  				this.name = name;
-  			this.clients = [];
-  this.password;
+	this.name = name;
+ 	this.clients = [];
+	this.password;
+	this.game;
 }
 
-app.get('/', function(req, res){ // get request at the root the call back's
-  res.sendfile('index.html');    // response object (res) servers the index.html file
+
+function Game(sockets){
+	this.players = players;
+	for (i = 0; i < sockets.length; i++){
+		this.players[i] = new Player(sockets[i]);	
+	}
+} 
+
+function Player(socket){
+	this.socket = socket;
+	this.score = 0;	
+}
+
+// get request at the root the call back's
+app.get('/', function(req, res){ 
+	// response object (res) servers the index.html file
+  	res.sendfile('index.html');    
 });
 
-app.get('/chat', function(req, res){ // get request at the root the call back's
-  res.sendfile('chat.html');    // response object (res) servers the index.html file
+// get request at the root the call back's
+app.get('/chat', function(req, res){   
+ // response object (res) servers the index.html file
+	res.sendfile('chat.html');  
 });
 
 io.on('connection', function(socket){
@@ -28,8 +46,8 @@ io.on('connection', function(socket){
     console.log("trying to find room: " + info[1]);
 
       var index;
-      for (count = 0; count < rooms.length; ++count){ //entry checks, check the room name, password, unique
-
+	//entry checks, check the room name, password, unique
+      for (count = 0; count < rooms.length; ++count){ 
         console.log("name: " + rooms[count].name);
 
           if (String(rooms[count].name) === String(info[1])) { //room name check
@@ -39,7 +57,7 @@ io.on('connection', function(socket){
             if (String(rooms[count].password) === String(info[2])){ //password check
               console.log("passed room password check");
 
-              var uniqueName = true;
+              va r uniqueName = true;
 
               for (var j = 0; j < rooms[count].clients.length; j++) { //unique name check
                 if (String(rooms[count].clients[j]) === String(info[0])) {
@@ -117,6 +135,12 @@ io.on('connection', function(socket){
 		}
 		console.log(socket.nickname + " has disconnected");
 	});
+
+	socket.on('gameinfo', function(ginfo){
+		var currentRoom = rooms[socket.roomNum];
+		currentRoom.game = new Game(rooms[socket.roomNum].clients);
+	}
+
 
 });
 
