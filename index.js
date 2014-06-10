@@ -5,8 +5,8 @@ var io = require('socket.io')(http); // creating a io object. I asked about the 
 
 var rooms = [];
 function Room(name){
-  				this.name = name;
-  			this.clients = [];
+  this.name = name;
+  this.clients = [];
   this.password;
 }
 
@@ -51,6 +51,8 @@ io.on('connection', function(socket){
                 rooms[count].clients.push(socket);
                 console.log("found the room and socket added to it");
                 index = count;
+		socket.roomNum = count;
+		console.log("socket.roomNum: " + socket.roomNum);
                 socket.emit('requestEntryResponse', index);
               } else { //FAILING UNIQUE NAME TEST
                 socket.emit('requestEntryResponse', "non-unique name");
@@ -59,45 +61,68 @@ io.on('connection', function(socket){
             } else { //FAILNG PASSWORD TEST
               console.log("failed password");
               socket.emit('requestEntryResponse', "failed password");
-            }
-      }
+            }      }
       console.log("emiting giveRoomIndex next.");
     }
   });
-  
-  socket.on('startRoom', function(strInfo){
-    console.log("passed string: " + strInfo);
-    var info = strInfo.split(",");
-    var newRoom = new Room(info[1]);
-    socket.nickname = String(info[0]);
-    console.log("started room: " + newRoom.name)
-    newRoom.password = String(info[2]);
-    newRoom.clients.push(socket);
-    rooms.push(newRoom);
-    var index = rooms.indexOf(newRoom);
-    socket.emit('requestEntryResponse', index);
-  });
 
-  socket.on('chat message', function(msg){
-    console.log("messaged recived");
-    var info = msg.split(",");
-    var message = info[0];
-    var roomNum = info[1];
-    console.log("messaged recived (before if)"); 
-    if (roomNum != null){ // why is this not enough
-     console.log("message: " + message + ",roomNum: " + roomNum);
-      var namedRoomIndex;
-      var activeRoom = rooms[roomNum];
-      var count;
-      if (activeRoom != null){
-      for (count = 0; count < activeRoom.clients.length; ++count){
-        console.log(activeRoom.clients[count].nickname);
-        if (socket != activeRoom.clients[count]){
-          activeRoom.clients[count].emit('chat message', message);
-        }
-      }}
-    }
-  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	socket.on('startRoom', function(strInfo){
+		console.log("passed string: " + strInfo);
+		var info = strInfo.split(",");
+   		var newRoom = new Room(info[1]);
+    		socket.nickname = String(info[0]);
+    		console.log("started room: " + newRoom.name)
+    		newRoom.password = String(info[2]);
+    		newRoom.clients.push(socket);
+    		rooms.push(newRoom);
+    		var index = rooms.indexOf(newRoom);
+		socket.roomNum = index;
+   		socket.emit('requestEntryResponse', index);
+  	});
+
+  	socket.on('chat message', function(msg){
+  		console.log("messaged recived");
+ 		var info = msg.split(",");
+		var message = info[0];
+    		var roomNum = socket.roomNum;
+    		console.log("messaged recived (before if)"); 
+		
+		if (roomNum != null){ // why is this not enough
+    	 		console.log("message: " + message + ",roomNum: " + roomNum);
+      			var namedRoomIndex;
+      			var activeRoom = rooms[roomNum];
+     			var count;
+      			if (activeRoom != null){
+      			for (count = 0; count < activeRoom.clients.length; ++count){
+        			console.log(activeRoom.clients[count].nickname);
+        			if (socket != activeRoom.clients[count]){
+          				activeRoom.clients[count].emit('chat message', message);
+       	 			}
+      			}
+			}
+    		}
+  	});
 
 	  socket.on('disconnect', function () { //this seems slow.
 		var k;
@@ -117,7 +142,6 @@ io.on('connection', function(socket){
 		}
 		console.log(socket.nickname + " has disconnected");
 	});
-
 });
 
 //server info
