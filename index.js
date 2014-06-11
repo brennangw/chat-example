@@ -27,7 +27,7 @@ function Game(sockets){
 	this.players = scramble(this.players);
 	this.activeplayerindex = 0;
 
-	updateG : function(){
+	this.updateG = function() {
 
 
 		for (i = 0; i < this.players.length ;++i){
@@ -41,7 +41,7 @@ function Game(sockets){
 function Player(socket){
 	this.socket = socket;
 	this.score = 0;
-	updateP : function(info){
+	this.updateP = function(info) {
 		this.socket.emit('game_update',update_info);
 	}	
 }
