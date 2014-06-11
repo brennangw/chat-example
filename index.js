@@ -1,7 +1,12 @@
+//getting the express object.
+var app = require('express')();
+//getting an https erver onject that with express
+var http = require('http').Server(app);  
+// creating a io object. I asked about the http server part. 
+var io = require('socket.io')(http);
 
-var app = require('express')(); //getting the express object.
-var http = require('http').Server(app);  //getting an https erver onject that with express
-var io = require('socket.io')(http); // creating a io object. I asked about the http server part. 
+
+var scramble = require('./scramble');
 
 var rooms = [];
 function Room(name){
@@ -9,19 +14,36 @@ function Room(name){
  	this.clients = [];
 	this.password;
 	this.game;
+	this.activegame = false;
+
 }
 
 
 function Game(sockets){
-	this.players = players;
+	this.players = [];
 	for (i = 0; i < sockets.length; i++){
 		this.players[i] = new Player(sockets[i]);	
+	}
+	this.players = scramble(this.players);
+	this.activeplayerindex = 0;
+
+	updateG : function(){
+
+
+		for (i = 0; i < this.players.length ;++i){
+			var p_update_info;
+			this.players[i].updateP(p_update_info);
+		}
+
 	}
 } 
 
 function Player(socket){
 	this.socket = socket;
-	this.score = 0;	
+	this.score = 0;
+	updateP : function(info){
+		this.socket.emit('game_update',update_info);
+	}	
 }
 
 // get request at the root the call back's
@@ -57,7 +79,7 @@ io.on('connection', function(socket){
             if (String(rooms[count].password) === String(info[2])){ //password check
               console.log("passed room password check");
 
-              va r uniqueName = true;
+              var uniqueName = true;
 
               for (var j = 0; j < rooms[count].clients.length; j++) { //unique name check
                 if (String(rooms[count].clients[j]) === String(info[0])) {
@@ -69,7 +91,7 @@ io.on('connection', function(socket){
                 rooms[count].clients.push(socket);
                 console.log("found the room and socket added to it");
                 index = count;
-                socket.emit('requestEntryResponse', index);
+		socket.roomNum = index;
               } else { //FAILING UNIQUE NAME TEST
                 socket.emit('requestEntryResponse', "non-unique name");
               }
@@ -93,14 +115,14 @@ io.on('connection', function(socket){
     newRoom.clients.push(socket);
     rooms.push(newRoom);
     var index = rooms.indexOf(newRoom);
-    socket.emit('requestEntryResponse', index);
+	socket.roomNum = index
   });
 
   socket.on('chat message', function(msg){
     console.log("messaged recived");
     var info = msg.split(",");
     var message = info[0];
-    var roomNum = info[1];
+    var roomNum = socket.roomNum;
     console.log("messaged recived (before if)"); 
     if (roomNum != null){ // why is this not enough
      console.log("message: " + message + ",roomNum: " + roomNum);
@@ -137,9 +159,19 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('gameinfo', function(ginfo){
+		//create a new game
+
+		if(socket.roomNum != null){
+
 		var currentRoom = rooms[socket.roomNum];
-		currentRoom.game = new Game(rooms[socket.roomNum].clients);
-	}
+		if (!rooms[socket.roomNum].activegame){
+			console.log("socket.roomNum: " + socket.roomNum);
+			rooms[socket.roomNum].game = new Game(rooms[socket.roomNum].clients);
+			rooms[socket.roomNum].activegame = true;
+
+		}
+		}
+	});
 
 
 });
@@ -149,3 +181,11 @@ var port = 3000;
 http.listen(port, function(){
   console.log('listening on *:' + port);
 });
+
+/*
+*  
+*
+*
+*
+*/
+

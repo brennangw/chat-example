@@ -66,11 +66,19 @@
       <ul id="messages" ></ul>
       </div>
       <p></p>
-      <form action="" id="f">
-      <input id="m" class="t" autocomplete="off" />
-      <button id="fb">Send</button>
-      </form>
-    </div>
+	<form action="" id="f">
+      		<input id="m" class="t" autocomplete="off" />
+      		<button id="fb">Chat</button>
+	</form>
+
+
+	<form action="" id="g">
+      		<input id="m" class="t" autocomplete="off" />
+      		<button id="fb">Game</button>
+	</form>
+
+
+	</div>
 
     <script>
       
@@ -79,7 +87,17 @@
       var socket = io();
       var roomIndex;
 
-      $('form').submit(function(){
+
+      $('#g').submit(function(){
+        $('#messages').append($('<li>').text($('#m').val()));
+        var toSend = String($('#m').val()) + ',' + String(roomIndex)
+        socket.emit('gameinfo', toSend);
+        $('#m').val('');
+        return false;
+      });
+
+
+      $('#f').submit(function(){
         $('#messages').append($('<li>').text($('#m').val()));
         var toSend = String($('#m').val()) + ',' + String(roomIndex)
         socket.emit('chat message', toSend);
